@@ -7,6 +7,7 @@ from functools import partial
 from doku.client import Client
 from doku.config_manager import ConfigManager
 
+from getpass import getpass
 
 class Context:
     client: Client
@@ -25,6 +26,9 @@ class Context:
 
     def __new_client(self):
         info = self.config['connection']
+        if not 'password' in info:
+            info['password'] = getpass()
+        
         self.client = Client(
             info['domain'],
             info['username'],
